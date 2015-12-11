@@ -26,6 +26,9 @@ abstract class Repository
     {
         $Select = new Select();
         $sql = $Select->select($this->Entity->getFieldsAlias())->from($this->Entity->getTable())->toSql();
-        return QueryBuilder::execute('SELECT', $sql, 'Count');
+        return QueryBuilder::execute([
+            'type' => 'SELECT',
+            'sql' => $sql
+        ]);
     }
 }

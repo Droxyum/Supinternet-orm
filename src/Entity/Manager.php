@@ -36,21 +36,28 @@ class Manager
        if(!empty($Entity->getId())) {
            $Update = new Update();
            $sql = $Update->from($Entity->getTable())->set($Entity->getFields())->where('id', '=', $Entity->getId())->toSql();
-           QueryBuilder::execute('UPDATE', $sql);
+           QueryBuilder::execute([
+               'type' => 'UPDATE',
+               'sql' => $sql
+           ]);
        } else {
            $field = [];
            $value = [];
 
            foreach($Entity->getFields() as $k => $v) {
                if(!empty($v)) {
-                   $value[] = $v;
+                   $value[] = '?';
                    $field[] = $k;
                }
            };
 
            $Insert = new Insert();
            $sql = $Insert->into($Entity->getTable(), $field)->values($value)->toSql();
-           $Entity->setId(QueryBuilder::execute('INSERT', $sql));
+           $Entity->setId(QueryBuilder::execute([
+               'type' => 'INSERT',
+               'sql' => $sql,
+               'params' => array_values($Entity->getFields())
+           ]));
        }
     }
 
@@ -63,7 +70,10 @@ class Manager
 
         $Delete = new Delete();
         $sql = $Delete->from($Entity->getTable())->where('id', '=', $Entity->getId())->toSql();
-        QueryBuilder::execute('DELETE', $sql);
+        QueryBuilder::execute([
+            'type' => 'DELETE',
+            'sql' => $sql
+        ]);
     }
 
 
