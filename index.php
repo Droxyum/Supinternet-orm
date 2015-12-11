@@ -8,7 +8,7 @@
 
 require 'vendor/autoload.php';
 
-$Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
+$Connection = new \ORM\Connection('', '', '', '');
 $EntityManager = new \ORM\Entity\Manager();
 
 $Article = new \Entity\Article();
