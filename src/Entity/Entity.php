@@ -16,6 +16,7 @@ use ORM\Entity\Relationship\OneToOne;
 
 class Entity
 {
+    const EXPLODE_CHAR = '_';
 
     public function getTable()
     {
@@ -26,6 +27,16 @@ class Entity
             $namespace = $namespace[0];
         }
         return strtolower($namespace);
+    }
+
+    public function getAlias()
+    {
+        $fields_name = $this->getFieldsName();
+        $array = [];
+        foreach($fields_name as $v) {
+            $array[] = $v.' AS '.$this->getTable().self::EXPLODE_CHAR.$v;
+        }
+        return $array;
     }
 
     public function getFieldsName()

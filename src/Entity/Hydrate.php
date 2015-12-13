@@ -11,8 +11,6 @@ namespace ORM\Entity;
 
 class Hydrate
 {
-    private $explode_char = '_';
-
     private $sqlResult;
 
     public function setSqlResult($sql_result)
@@ -55,12 +53,12 @@ class Hydrate
 
     private function getTableFromIndex($index)
     {
-        return explode($this->explode_char, $index)[0];
+        return explode(Entity::EXPLODE_CHAR, $index)[0];
     }
 
     private function getFieldNameFromIndex($index)
     {
-        return explode($this->explode_char, $index)[1];
+        return explode(Entity::EXPLODE_CHAR, $index)[1];
     }
 
 
