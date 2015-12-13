@@ -11,15 +11,13 @@ require 'vendor/autoload.php';
 $Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
 $EntityManager = new \ORM\Entity\Manager();
 
-/*for ($i = 1; $i <= 10; $i++) {
-    $Article = new \Entity\Article();
-    $Article->setId('sdfsdf');
-    $Article->setTitle('Article n°'.$i);
-    $Article->setContent('Contenu de l\'Article n°'.$i);
-    $EntityManager->persist($Article);
-}*/
 
+$Category = new \Entity\Category();
+$Category->setName('My Category');
 
-$Articles = $EntityManager->getRepository('Entity:Article')->findAll();
+$Article = new \Entity\Article();
+$Article->setTitle('My first article');
+$Article->setContent('My content of my first article with category My Category');
+$Article->setCategory($Category);
 
-var_dump($Articles);
+$EntityManager->persist($Article);

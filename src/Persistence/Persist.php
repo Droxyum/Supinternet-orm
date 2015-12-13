@@ -15,6 +15,8 @@ class Persist
 {
     protected $Entity;
 
+    protected $lasId;
+
     public function __construct(&$Entity)
     {
         $this->Entity = $Entity;
@@ -45,5 +47,6 @@ class Persist
     {
         return $this->Entity;
     }
+
 
 }

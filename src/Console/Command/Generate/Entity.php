@@ -48,22 +48,63 @@ class Entity
         $code = "<?php \n \n";
         $code .= "namespace Entity; \n \n";
         $code .= "use ORM\\Entity\\Entity; \n \n";
+
+        foreach($this->fieldsList as $k => $v) {
+            if(strstr($v, '_id')) {
+                $code .= "use ORM\\Entity\\Mapping\\ManyToOne; \n \n";
+            }
+        }
+
         $code .= "class $this->_className extends Entity \n{ \n";
 
         foreach($this->fieldsList as $k => $v) {
-            $code .= "    protected $$v; \n";
+            if(!strstr($v, '_id')) {
+                $code .= "\tprotected $$v; \n";
+            } else {
+                $v = explode('_', $v);
+                $code .= "\tprotected $".ucfirst($v[0])."; \t // Join field on \\Entity\\Category \n";
+            }
         }
+
+
+
+        $code .= "\n \n";
+
+        $code .= "\tpublic function __construct() { \n";
+        foreach($this->fieldsList as $k => $v) {
+            if(strstr($v, '_id')) {
+                $v = explode('_', $v);
+                $v = ucfirst($v[0]);
+                $code .= "\t\t".'$this->'.$v." = new ManyToOne(".'$this, \'\\Entity\\'.$v.'\''."); \n";
+            }
+        }
+        $code .= "\t} \n \n";
+
+
 
         $code .= "\n \n";
 
         foreach($this->fieldsList as $k => $v) {
-            $code .= "    public function set".ucfirst($v)."($$v) { \n";
-            $code .= '        $this->'.$v.' = $'.$v.";\n";
-            $code .= "    } \n \n";
+            if(!strstr($v, '_id')) {
+                $code .= "\tpublic function set".ucfirst($v)."($$v) { \n";
+                $code .= "\t\t".'$this->'.$v.' = $'.$v.";\n";
+                $code .= "\t} \n \n";
 
-            $code .= "    public function get".ucfirst($v)."() { \n";
-            $code .= '         return $this->'.$v.";\n";
-            $code .= "    } \n \n";
+                $code .= "\tpublic function get".ucfirst($v)."() { \n";
+                $code .= "\t\t".'return $this->'.$v.";\n";
+                $code .= "\t} \n \n";
+            } else {
+                $v = explode('_', $v);
+                $v = $v[0];
+
+                $code .= "\tpublic function set".ucfirst($v)."($$v) { \n";
+                $code .= "\t\t".'$this->'.ucfirst($v)."->set($".$v."); \n";
+                $code .= "\t} \n \n";
+
+                $code .= "\tpublic function get".ucfirst($v)."() { \n";
+                $code .= "\t\t".'return $this->'.ucfirst($v).";\n";
+                $code .= "\t} \n \n";
+            }
         }
 
         $code .= "}";

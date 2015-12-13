@@ -41,16 +41,74 @@ class Entity
 
     public function getFieldsName()
     {
-        $array = array_keys(get_object_vars($this));
+        $array = get_object_vars($this);
         array_shift($array);
-        return $array;
+        $toReturn = [];
+        foreach($array as $k => $v) {
+            if(!$this->isRelationship($k)) {
+                $toReturn[] = $k;
+            }
+        }
+        return $toReturn;
     }
 
     public function getFieldsValue()
     {
-        $array = array_values(get_object_vars($this));
+        $array = get_object_vars($this);
         array_shift($array);
-        return $array;
+        $toReturn = [];
+        foreach($array as $k => $v) {
+            if(!$this->isRelationship($k)) {
+                $toReturn[] = $v;
+            }
+        }
+        return $toReturn;
+    }
+
+    public function getRelationFields()
+    {
+        $array = get_object_vars($this);
+        array_shift($array);
+        $toReturn = [];
+        foreach($array as $k => $v) {
+            if($this->isRelationship($k)) {
+                $toReturn[] = $k;
+            }
+        }
+        return $toReturn;
+    }
+
+    public function hasRelationship()
+    {
+        $array = get_object_vars($this);
+        array_shift($array);
+        $hasRelationship = false;
+        foreach($array as $k => $v) {
+            if($this->isRelationship($k)) {
+                $hasRelationship = true;
+                break;
+            }
+        }
+        return $hasRelationship;
+    }
+
+    public function isRelationship($field)
+    {
+        $getter = 'get'.ucfirst($field);
+        return is_object($this->$getter());
+    }
+
+    public function isRelationshipEmpty()
+    {
+        $empty = false;
+        foreach($this->getRelationFields() as $field) {
+            $getter = 'get'.ucfirst($field);
+            if($this->$getter()->isEmpty()) {
+                $empty = true;
+                break;
+            }
+        }
+        return $empty;
     }
 
 }
