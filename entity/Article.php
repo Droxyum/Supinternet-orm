@@ -2,15 +2,24 @@
  
 namespace Entity; 
  
-use ORM\Entity\Entity; 
- 
+use ORM\Entity\Entity;
+use ORM\Entity\Relation;
+
 class Article extends Entity 
 { 
     protected $id; 
     protected $title; 
-    protected $content; 
+    protected $content;
 
- 
+    //protected $Category;
+
+
+
+    public function __construct()
+    {
+       // $this->Category = new Relation($this, 'Entity\\Category', Relation::ManyToOne);
+    }
+
     public function setId($id) { 
         $this->id = $id;
     } 

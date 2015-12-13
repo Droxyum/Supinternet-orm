@@ -10,6 +10,7 @@ namespace ORM\Entity;
 
 
 
+use ORM\QueryBuilder\Join;
 use ORM\QueryBuilder\QueryBuilder;
 use ORM\QueryBuilder\Select;
 

@@ -4,18 +4,27 @@ namespace ORM\QueryBuilder;
 
 use ORM\Connection;
 use ORM\Entity\Hydrate;
+use ORM\Exception\InvalidArgument;
 use ORM\Tools\Logger;
 
 class QueryBuilder
 {
     public static function execute(array $array = [])
     {
+
+        $array['type'] = explode(' ', $array['sql'])[0];
         $array['fn'] = (!empty($array['fn'])) ? $array['fn'] : false;
-        $array['params'] = (!empty($array['params']) || !is_array($array['params'])) ? $array['params'] : [];
+        $array['params'] = (!empty($array['params'])) ? $array['params'] : [];
+
+
+        if(empty($array['sql'])) {
+            $e = new InvalidArgument('sql params not set in QueryBuilder::execute()');
+            $e->setClassName(get_class());
+        }
 
         $Connection = Connection::getConnection();
         $request = $Connection->prepare($array['sql']);
-        $request->execute();
+        $request->execute($array['params']);
 
         $errorInfo = $Connection->errorInfo();
         if($errorInfo[0] == '00000') {
