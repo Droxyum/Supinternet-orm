@@ -28,7 +28,7 @@ trait Set
     {
         $array = [];
 
-        foreach ($this->getSetValues() as $k => $v) { $array[] = $k.' = ?'; }
+        foreach ($this->getSetValues() as $v) { $array[] = $v.' = ?'; }
         $query = ' SET ';
         $query .= implode(', ', $array);
         return $query;

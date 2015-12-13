@@ -16,14 +16,6 @@ class DeletePersist extends Persist
 {
     protected function analyze()
     {
-        $params = [];
-
-        foreach($this->Entity->getFields() as $k => $v) {
-            if(!empty($v)) {
-                $params[] = $v;
-            }
-        };
-
         $Delete = new Delete();
         $sql = $Delete->from($this->Entity->getTable())->where('id', '=', $this->Entity->getId())->toSql();
         try {

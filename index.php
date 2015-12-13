@@ -12,9 +12,9 @@ $Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
 $EntityManager = new \ORM\Entity\Manager();
 
 $Article = new \Entity\Article();
-$Article->setId(21);
-$Article->setContent('sdf sdfqsdqsdqdrticle');
-$Article->setTitle('sdf');
+$Article->setId(22);
+$Article->setContent('sdf sdfq sdqsdq drticle');
+$Article->setTitle('s d f');
 $EntityManager->remove($Article);
 
 

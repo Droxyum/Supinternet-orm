@@ -17,25 +17,6 @@ use ORM\Entity\Relationship\OneToOne;
 class Entity
 {
 
-    const MAPPED = 'mapped';
-    const INVERSED = 'inversed';
-
-    protected function oneToMany($type, $foreign_key = null) {
-        return new OneToMany($type, $foreign_key);
-    }
-
-    protected function manyToOne($type, $foreign_key = null) {
-        return new ManyToOne($type, $foreign_key);
-    }
-
-    protected function oneToOne($type, $foreign_key = null) {
-        return new OneToOne($type, $foreign_key);
-    }
-
-    protected function manyToMany($type, $join_table = null) {
-        return new ManyToMany($type, $join_table);
-    }
-
     public function getTable()
     {
         $namespace = get_class($this);
@@ -47,32 +28,18 @@ class Entity
         return strtolower($namespace);
     }
 
-    public function getFieldsAlias($vars = false, $table = false)
+    public function getFieldsName()
     {
-        if(!$vars) {
-            $fields = get_object_vars($this);
-        } else {
-            $fields = $vars;
-        }
-        $fieldsToReturn = [];
-        foreach($fields as $k => $v) {
-            if (!is_object($fields[$k])) {
-                if(!$table) {
-                    $fieldsToReturn[] = $this->getTable().'.'.$k.' AS '.$this->getTable().'_'.$k;
-                } else {
-                    $fieldsToReturn[] = $table.'.'.$k.' AS '.$table.'_'.$k;
-                }
-            } else {
-                $e = $v->getNewEntity();
-                $fieldsToReturn = array_merge($fieldsToReturn, $this->getFields(get_object_vars($e), $e->getTable()));
-            }
-        }
-        return $fieldsToReturn;
+        $array = array_keys(get_object_vars($this));
+        array_shift($array);
+        return $array;
     }
 
-    public function getFields()
+    public function getFieldsValue()
     {
-        return get_object_vars($this);
+        $array = array_values(get_object_vars($this));
+        array_shift($array);
+        return $array;
     }
 
 }

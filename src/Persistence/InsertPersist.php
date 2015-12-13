@@ -16,24 +16,12 @@ class InsertPersist extends Persist
 {
     protected function analyze()
     {
-        $field = [];
-        $value = [];
-        $params = [];
-
-        foreach($this->Entity->getFields() as $k => $v) {
-            if(!empty($v)) {
-                $value[] = '?';
-                $field[] = $k;
-                $params[] = $v;
-            }
-        };
-
         $Insert = new Insert();
-        $sql = $Insert->into($this->Entity->getTable(), $field)->values($value)->toSql();
+        $sql = $Insert->into($this->Entity->getTable(), $this->Entity->getFieldsName())->toSql();
         try {
             $last_id = $this->persist([
                 'sql' => $sql,
-                'params' => $params
+                'params' => $this->Entity->getFieldsValue()
             ]);
         } catch (InvalidArgument $e) { die($e->cry()); }
 

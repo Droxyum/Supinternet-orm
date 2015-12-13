@@ -23,6 +23,11 @@ class Insert implements ClauseInterface
         $this->setInto($table);
         if($values) {
             $this->setIntoValues($values);
+            $array = [];
+            foreach($values as $v) {
+                $array[] = '?';
+            }
+            $this->values($array);
         }
         return $this;
     }
