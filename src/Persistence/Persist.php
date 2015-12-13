@@ -21,6 +21,19 @@ class Persist
         $this->analyze();
     }
 
+    public static function checkPersistenceType(&$Entity, $delete = false)
+    {
+        if(!$delete) {
+            if(!empty($Entity->getId())) {
+                return new UpdatePersist($Entity);
+            } else {
+                return new InsertPersist($Entity);
+            }
+        } else {
+            return new DeletePersist($Entity);
+        }
+    }
+
     protected function persist($array = [])
     {
         return QueryBuilder::execute($array);

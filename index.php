@@ -11,11 +11,12 @@ require 'vendor/autoload.php';
 $Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
 $EntityManager = new \ORM\Entity\Manager();
 
-/*$Article = new \Entity\Article();
-$Article->setId(22);
-$Article->setContent('sdf sdfq sdqsdq drticle');
-$Article->setTitle('s d f');
-$EntityManager->remove($Article);*/
+/*for ($i = 1; $i <= 10; $i++) {
+    $Article = new \Entity\Article();
+    $Article->setTitle('Article n°'.$i);
+    $Article->setContent('Contenu de l\'Article n°'.$i);
+    $EntityManager->persist($Article);
+}*/
 
 
 $Articles = $EntityManager->getRepository('Entity:Article')->findAll();

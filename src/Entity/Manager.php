@@ -10,9 +10,7 @@ namespace ORM\Entity;
 
 
 use ORM\Exception\InvalidArgument;
-use ORM\Persistence\DeletePersist;
-use ORM\Persistence\InsertPersist;
-use ORM\Persistence\UpdatePersist;
+use ORM\Persistence\Persist;
 
 
 class Manager
@@ -33,16 +31,17 @@ class Manager
             $e->setClassName(get_class());
         }
 
-       if(!empty($Entity->getId())) {
-          $UpdatePersist = new UpdatePersist($Entity);
-       } else {
-           $InsertPersist = new InsertPersist($Entity);
-       }
+        $Persistence = Persist::checkPersistenceType($Entity);
     }
 
     public function remove(Entity &$Entity)
     {
-        $DeletePersist = new DeletePersist($Entity);
+        if (!is_object($Entity)) {
+            $e = new InvalidArgument('$Entity must an Entity class');
+            $e->setClassName(get_class());
+        }
+
+        $Persistence = Persist::checkPersistenceType($Entity, true);
     }
 
 
