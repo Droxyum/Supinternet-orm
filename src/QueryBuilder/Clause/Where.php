@@ -20,7 +20,9 @@ trait Where
 
     public function where($field, $operator, $value)
     {
-        $this->where[] = $field.' '.$operator.' '.$value;
+        $stm = $field.' '.$operator.' ';
+        if (is_int($value)) { $stm .= $value; } else { $stm .= '\''.$value.'\''; }
+        $this->where[] = $stm;
         return $this;
     }
 

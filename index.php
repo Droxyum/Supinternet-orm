@@ -13,6 +13,7 @@ $EntityManager = new \ORM\Entity\Manager();
 
 /*for ($i = 1; $i <= 10; $i++) {
     $Article = new \Entity\Article();
+    $Article->setId('sdfsdf');
     $Article->setTitle('Article n°'.$i);
     $Article->setContent('Contenu de l\'Article n°'.$i);
     $EntityManager->persist($Article);

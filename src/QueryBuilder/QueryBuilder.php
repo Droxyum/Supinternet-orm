@@ -24,13 +24,12 @@ class QueryBuilder
 
         $Connection = Connection::getConnection();
         $request = $Connection->prepare($array['sql']);
-        $request->execute($array['params']);
 
-        $errorInfo = $Connection->errorInfo();
-        if($errorInfo[0] == '00000') {
+        if($request->execute($array['params'])) {
             $Logger = new Logger(dirname(dirname(__DIR__)).'/access.log');
             $Logger->add($array['sql']);
         } else {
+            $errorInfo = $request->errorInfo();
             $Logger = new Logger(dirname(dirname(__DIR__)).'/error.log');
             $Logger->add($array['sql'].' | '.$errorInfo[2]);
         }
