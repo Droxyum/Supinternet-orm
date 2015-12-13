@@ -26,7 +26,7 @@ abstract class Repository
     public function findAll()
     {
         $Select = new Select();
-        $sql = $Select->select($this->Entity->getFieldsAlias())->from($this->Entity->getTable())->toSql();
+        $sql = $Select->select($this->Entity->getFieldName())->from($this->Entity->getTable())->toSql();
         return QueryBuilder::execute([
             'type' => 'SELECT',
             'sql' => $sql

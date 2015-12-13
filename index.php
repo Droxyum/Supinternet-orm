@@ -11,13 +11,13 @@ require 'vendor/autoload.php';
 $Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
 $EntityManager = new \ORM\Entity\Manager();
 
-$Article = new \Entity\Article();
+/*$Article = new \Entity\Article();
 $Article->setId(22);
 $Article->setContent('sdf sdfq sdqsdq drticle');
 $Article->setTitle('s d f');
-$EntityManager->remove($Article);
+$EntityManager->remove($Article);*/
 
 
-/*$Articles = $EntityManager->getRepository('Entity:Article')->findAll();
+$Articles = $EntityManager->getRepository('Entity:Article')->findAll();
 
-var_dump($Articles);*/
+var_dump($Articles);
