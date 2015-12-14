@@ -23,13 +23,20 @@ abstract class Repository
         $this->Entity = $Entity;
     }
 
-    public function findAll()
+    public function findAll($params = [])
     {
         $Select = new Select();
         $sql = $Select->select($this->Entity->getAlias())->from($this->Entity->getTable())->toSql();
-        return QueryBuilder::execute([
+
+        $executeParams = [
             'type' => 'SELECT',
             'sql' => $sql
-        ]);
+        ];
+
+        if(!empty($params['doRelations']) && is_array($params['doRelations'])) {
+            $executeParams['doRelations'] = $params['doRelations'];
+        }
+
+        return QueryBuilder::execute($executeParams);
     }
 }

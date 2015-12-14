@@ -8,16 +8,9 @@
 
 require 'vendor/autoload.php';
 
-$Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
+$Connection = new \ORM\Connection('', '', '', '');
 $EntityManager = new \ORM\Entity\Manager();
 
+$Articles = $EntityManager->getRepository('Entity:Article')->findAll(['doRelations' => ['Category']]);
 
-$Category = new \Entity\Category();
-$Category->setName('My Category');
-
-$Article = new \Entity\Article();
-$Article->setTitle('My first article');
-$Article->setContent('My content of my first article with category My Category');
-$Article->setCategory($Category);
-
-$EntityManager->persist($Article);
+var_dump($Articles);

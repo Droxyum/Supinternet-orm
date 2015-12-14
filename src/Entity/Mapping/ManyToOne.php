@@ -11,6 +11,7 @@ namespace ORM\Entity\Mapping;
 
 class ManyToOne
 {
+    const RELATION_TYPE = 'ManyToOne';
     private $Entity;
     private $relationEntity;
 

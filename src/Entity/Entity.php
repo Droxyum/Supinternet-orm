@@ -42,7 +42,6 @@ class Entity
     public function getFieldsName()
     {
         $array = get_object_vars($this);
-        array_shift($array);
         $toReturn = [];
         foreach($array as $k => $v) {
             if(!$this->isRelationship($k)) {
@@ -55,7 +54,6 @@ class Entity
     public function getFieldsValue()
     {
         $array = get_object_vars($this);
-        array_shift($array);
         $toReturn = [];
         foreach($array as $k => $v) {
             if(!$this->isRelationship($k)) {
