@@ -91,7 +91,14 @@ class QueryBuilder
     {
         $Connection = Connection::getConnection();
         $request = $Connection->prepare($sql);
-        $request->execute($params);
+        if($request->execute($params)) {
+            $Logger = new Logger(dirname(dirname(__DIR__)).'/access.log');
+            $Logger->add($sql);
+        } else {
+            $errorInfo = $request->errorInfo();
+            $Logger = new Logger(dirname(dirname(__DIR__)).'/error.log');
+            $Logger->add($sql.' | '.$errorInfo[2]);
+        }
         return $request->fetchAll();
     }
 }

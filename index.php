@@ -8,7 +8,7 @@
 
 require 'vendor/autoload.php';
 
-$Connection = new \ORM\Connection('', '', '', '');
+$Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
 $EntityManager = new \ORM\Entity\Manager();
 
 $Articles = $EntityManager->getRepository('Entity:Article')->findAll(['doRelations' => ['Category']]);
