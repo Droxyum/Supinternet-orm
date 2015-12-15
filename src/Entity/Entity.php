@@ -18,25 +18,25 @@ class Entity
 {
     const EXPLODE_CHAR = '_';
 
-    public function getTable()
-    {
-        $namespace = get_class($this);
-        if(strpos($namespace, '\\')) {
-            $namespace = explode('\\', $namespace);
-            $namespace = array_reverse($namespace);
-            $namespace = $namespace[0];
-        }
-        return strtolower($namespace);
-    }
-
     public function getAlias()
     {
         $fields_name = $this->getFieldsName();
         $array = [];
         foreach($fields_name as $v) {
-            $array[] = $v.' AS '.$this->getTable().self::EXPLODE_CHAR.$v;
+            $array[] = $v.' AS '.$this->getClassName().self::EXPLODE_CHAR.$v;
         }
         return $array;
+    }
+
+    private function getClassName()
+    {
+        $className = get_class($this);
+        if(strstr($className, '\\')) {
+            $className = explode('\\', $className);
+            $className = array_reverse($className);
+            $className = $className[0];
+        }
+        return $className;
     }
 
     public function getFieldsName()

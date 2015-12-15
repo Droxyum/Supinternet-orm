@@ -25,7 +25,8 @@ class UpdatePersist extends Persist
                 $relation = $this->Entity->$getter();
                 switch($relation::RELATION_TYPE) {
                     case ManyToOne::RELATION_TYPE:
-                        $Relations[] = ['field' => $relation->get()->getTable().'_id', 'value' => $relation->get()->getId()];
+                        $r = $relation->get();
+                        $Relations[] = ['field' => $r::TABLE.'_id', 'value' => $relation->get()->getId()];
                 }
             }
         }
@@ -41,7 +42,8 @@ class UpdatePersist extends Persist
         }
 
         $Update = new Update();
-           $sql = $Update->from($this->Entity->getTable())->set($fieldsName)->where('id', '=', $this->Entity->getId())->toSql();
+        $entity = $this->Entity;
+           $sql = $Update->from($entity::TABLE)->set($fieldsName)->where('id', '=', $this->Entity->getId())->toSql();
            try {
               $this->persist([
                   'sql' => $sql,

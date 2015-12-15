@@ -17,7 +17,8 @@ class DeletePersist extends Persist
     protected function analyze()
     {
         $Delete = new Delete();
-        $sql = $Delete->from($this->Entity->getTable())->where('id', '=', $this->Entity->getId())->toSql();
+        $entity = $this->Entity;
+        $sql = $Delete->from($entity::TABLE)->where('id', '=', $this->Entity->getId())->toSql();
         try {
             $this->persist([
                 'sql' => $sql,

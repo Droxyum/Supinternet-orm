@@ -60,8 +60,11 @@ class QueryBuilder
                             switch($Relation::RELATION_TYPE){
                                 case ManyToOne::RELATION_TYPE:
                                     $EntityManager = new Manager();
+                                    $table = 'Entity\\'.$relation;
+                                    $table = new $table();
+                                    $table = $table::TABLE;
                                     $$relation = $EntityManager->getRepository('Entity:'.$relation)->findAll();
-                                    $join_id = self::query('SELECT '.strtolower($relation).'_id as join_id FROM '.$Entity->getTable().' WHERE id = ?', [$Entity->getId()])[0]['join_id'];
+                                    $join_id = self::query('SELECT '.strtolower($table).'_id as join_id FROM '.$Entity::TABLE.' WHERE id = ?', [$Entity->getId()])[0]['join_id'];
                                     foreach($$relation as $relationFetch) {
                                         if($relationFetch->getId() == $join_id) {
                                             $Entities[$k]->$setter($relationFetch);

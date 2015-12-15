@@ -57,6 +57,8 @@ class Entity
 
         $code .= "class $this->_className extends Entity \n{ \n";
 
+        $code .= "\tconst TABLE = '$this->_tableName'; \n";
+
         foreach($this->fieldsList as $k => $v) {
             if(!strstr($v, '_id')) {
                 $code .= "\tprotected $$v; \n";

@@ -26,7 +26,8 @@ abstract class Repository
     public function findAll($params = [])
     {
         $Select = new Select();
-        $sql = $Select->select($this->Entity->getAlias())->from($this->Entity->getTable())->toSql();
+        $entity = $this->Entity;
+        $sql = $Select->select($this->Entity->getAlias())->from($entity::TABLE)->toSql();
 
         $executeParams = [
             'type' => 'SELECT',

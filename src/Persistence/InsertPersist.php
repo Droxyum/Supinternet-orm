@@ -25,7 +25,8 @@ class InsertPersist extends Persist
                 $relation = $this->Entity->$getter();
                 switch($relation::RELATION_TYPE) {
                     case ManyToOne::RELATION_TYPE:
-                        $Relations[] = ['field' => $relation->get()->getTable().'_id', 'value' => $relation->get()->getId()];
+                        $r = $relation->get();
+                        $Relations[] = ['field' => $r::TABLE.'_id', 'value' => $relation->get()->getId()];
                 }
             }
         }
@@ -41,7 +42,8 @@ class InsertPersist extends Persist
         }
 
         $Insert = new Insert();
-        $sql = $Insert->into($this->Entity->getTable(), $fieldsName)->toSql();
+        $entity = $this->Entity;
+        $sql = $Insert->into($entity::TABLE, $fieldsName)->toSql();
         try {
             $last_id = $this->persist([
                 'sql' => $sql,
