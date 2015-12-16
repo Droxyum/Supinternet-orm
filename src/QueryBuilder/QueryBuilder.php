@@ -54,8 +54,10 @@ class QueryBuilder
                     foreach($Entities as $k => $Entity) {
                         foreach($array['doRelations'] as $relation) {
                             $relation = ucfirst(strtolower($relation));
-                            $setter = 'set'.$relation;
-                            $getter = 'get'.$relation;
+                            $e = 'Entity\\'.$relation;
+                            $e = new $e();
+                            $setter = 'set'.ucfirst(strtolower($e::TABLE));
+                            $getter = 'get'.ucfirst(strtolower($e::TABLE));
                             $Relation = $Entity->$getter();
                             switch($Relation::RELATION_TYPE){
                                 case ManyToOne::RELATION_TYPE:
