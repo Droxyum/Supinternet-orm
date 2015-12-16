@@ -11,12 +11,5 @@ require 'vendor/autoload.php';
 $Connection = new \ORM\Connection('localhost', 'orm', 'root', 'abx24z4hb9zX');
 $EntityManager = new \ORM\Entity\Manager();
 
-/*$Article = new \Entity\Article();
-$Article->setContent('Content of article');
-$Article->setTitle('title');
-$EntityManager->persist($Article);*/
-
-
-$Articles = $EntityManager->getRepository('Entity:Article')->findAll();
-
+$Articles = $EntityManager->getRepository('Entity:Article')->findAll(['doRelations' => ['Category']]);
 var_dump($Articles);

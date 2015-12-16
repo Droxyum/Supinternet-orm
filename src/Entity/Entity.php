@@ -16,63 +16,97 @@ use ORM\Entity\Relationship\OneToOne;
 
 class Entity
 {
+    const EXPLODE_CHAR = '_';
 
-    const MAPPED = 'mapped';
-    const INVERSED = 'inversed';
-
-    protected function oneToMany($type, $foreign_key = null) {
-        return new OneToMany($type, $foreign_key);
-    }
-
-    protected function manyToOne($type, $foreign_key = null) {
-        return new ManyToOne($type, $foreign_key);
-    }
-
-    protected function oneToOne($type, $foreign_key = null) {
-        return new OneToOne($type, $foreign_key);
-    }
-
-    protected function manyToMany($type, $join_table = null) {
-        return new ManyToMany($type, $join_table);
-    }
-
-    public function getTable()
+    public function getAlias()
     {
-        $namespace = get_class($this);
-        if(strpos($namespace, '\\')) {
-            $namespace = explode('\\', $namespace);
-            $namespace = array_reverse($namespace);
-            $namespace = $namespace[0];
+        $fields_name = $this->getFieldsName();
+        $array = [];
+        foreach($fields_name as $v) {
+            $array[] = $v.' AS '.$this->getClassName().self::EXPLODE_CHAR.$v;
         }
-        return strtolower($namespace);
+        return $array;
     }
 
-    public function getFieldsAlias($vars = false, $table = false)
+    private function getClassName()
     {
-        if(!$vars) {
-            $fields = get_object_vars($this);
-        } else {
-            $fields = $vars;
+        $className = get_class($this);
+        if(strstr($className, '\\')) {
+            $className = explode('\\', $className);
+            $className = array_reverse($className);
+            $className = $className[0];
         }
-        $fieldsToReturn = [];
-        foreach($fields as $k => $v) {
-            if (!is_object($fields[$k])) {
-                if(!$table) {
-                    $fieldsToReturn[] = $this->getTable().'.'.$k.' AS '.$this->getTable().'_'.$k;
-                } else {
-                    $fieldsToReturn[] = $table.'.'.$k.' AS '.$table.'_'.$k;
-                }
-            } else {
-                $e = $v->getNewEntity();
-                $fieldsToReturn = array_merge($fieldsToReturn, $this->getFields(get_object_vars($e), $e->getTable()));
+        return $className;
+    }
+
+    public function getFieldsName()
+    {
+        $array = get_object_vars($this);
+        $toReturn = [];
+        foreach($array as $k => $v) {
+            if(!$this->isRelationship($k)) {
+                $toReturn[] = $k;
             }
         }
-        return $fieldsToReturn;
+        return $toReturn;
     }
 
-    public function getFields()
+    public function getFieldsValue()
     {
-        return get_object_vars($this);
+        $array = get_object_vars($this);
+        $toReturn = [];
+        foreach($array as $k => $v) {
+            if(!$this->isRelationship($k)) {
+                $toReturn[] = $v;
+            }
+        }
+        return $toReturn;
+    }
+
+    public function getRelationFields()
+    {
+        $array = get_object_vars($this);
+        array_shift($array);
+        $toReturn = [];
+        foreach($array as $k => $v) {
+            if($this->isRelationship($k)) {
+                $toReturn[] = $k;
+            }
+        }
+        return $toReturn;
+    }
+
+    public function hasRelationship()
+    {
+        $array = get_object_vars($this);
+        array_shift($array);
+        $hasRelationship = false;
+        foreach($array as $k => $v) {
+            if($this->isRelationship($k)) {
+                $hasRelationship = true;
+                break;
+            }
+        }
+        return $hasRelationship;
+    }
+
+    public function isRelationship($field)
+    {
+        $getter = 'get'.ucfirst($field);
+        return is_object($this->$getter());
+    }
+
+    public function isRelationshipEmpty()
+    {
+        $empty = false;
+        foreach($this->getRelationFields() as $field) {
+            $getter = 'get'.ucfirst($field);
+            if($this->$getter()->isEmpty()) {
+                $empty = true;
+                break;
+            }
+        }
+        return $empty;
     }
 
 }

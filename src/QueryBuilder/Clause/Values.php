@@ -27,7 +27,7 @@ trait Values
     {
         $array = [];
         foreach($values as $v) {
-            $array[] = (is_int($v) || empty($v)) ? $v : '\''.$v.'\'';
+            $array[] = '?';
         }
         return $array;
     }

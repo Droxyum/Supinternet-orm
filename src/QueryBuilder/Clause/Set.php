@@ -24,16 +24,11 @@ trait Set
         return $this->set;
     }
 
-    private function parseString($values)
-    {
-        return (is_int($values) || empty($values)) ? $values : '\''.$values.'\'';
-    }
-
     protected function buildSet()
     {
         $array = [];
 
-        foreach ($this->getSetValues() as $k => $v) { $array[] = $k.' = '.$this->parseString($v); }
+        foreach ($this->getSetValues() as $v) { $array[] = $v.' = ?'; }
         $query = ' SET ';
         $query .= implode(', ', $array);
         return $query;

@@ -10,6 +10,7 @@ namespace ORM\Entity;
 
 
 
+use ORM\QueryBuilder\Join;
 use ORM\QueryBuilder\QueryBuilder;
 use ORM\QueryBuilder\Select;
 
@@ -22,10 +23,21 @@ abstract class Repository
         $this->Entity = $Entity;
     }
 
-    public function findAll()
+    public function findAll($params = [])
     {
         $Select = new Select();
-        $sql = $Select->select($this->Entity->getFieldsAlias())->from($this->Entity->getTable())->toSql();
-        return QueryBuilder::execute('SELECT', $sql, 'Count');
+        $entity = $this->Entity;
+        $sql = $Select->select($this->Entity->getAlias())->from($entity::TABLE)->toSql();
+
+        $executeParams = [
+            'type' => 'SELECT',
+            'sql' => $sql
+        ];
+
+        if(!empty($params['doRelations']) && is_array($params['doRelations'])) {
+            $executeParams['doRelations'] = $params['doRelations'];
+        }
+
+        return QueryBuilder::execute($executeParams);
     }
 }
