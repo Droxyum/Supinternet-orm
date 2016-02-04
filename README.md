@@ -79,6 +79,7 @@ $PostsRepository->findAll(); //Find all post in database
 ### Find with relationship
 ```
 // New entity
+//Category.php
 class Category extends Entity 
 { 
 	const TABLE = 'categories'; 
@@ -105,6 +106,7 @@ class Category extends Entity
 }
 
 // Entity post created (Juste NanyToOne relation is available)
+//Post.php
 class Post extends Entity {
     // ...
     protected $Categories; 	 // Join field on \Entity\Category
@@ -113,6 +115,13 @@ class Post extends Entity {
     }
     // ...
 }
+
+//index.php
+$PostsRepository = $EntityManager->getRepository('Entity:Post'); //Get post repository
+
+//Find all post in database with relationship
+/!\ 'doRelations' must be an array 
+$PostsRepository->findAll(['doRelations' =>  ['Category'] ]);
 ```
 
 ---
