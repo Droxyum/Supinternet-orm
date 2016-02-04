@@ -1,6 +1,6 @@
 # supinternet-orm
 
-`composer install`
+`composer require droxyum/supinternet-orm dev-master`
 
 ---
  #### Create new connection to database: 
