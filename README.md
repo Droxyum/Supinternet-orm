@@ -120,7 +120,7 @@ class Post extends Entity {
 $PostsRepository = $EntityManager->getRepository('Entity:Post'); //Get post repository
 
 //Find all post in database with relationship
-/!\ 'doRelations' must be an array 
+///!\ 'doRelations' must be an array 
 $PostsRepository->findAll(['doRelations' =>  ['Category'] ]);
 ```
 
